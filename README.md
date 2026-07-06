@@ -26,28 +26,64 @@ By implementing a structured RAG pipeline, the system extracts the text from a g
 
 The system processes data and answers questions through a structured, multi-phase pipeline:
 
-[YouTube Video ID]
-│
-▼
 
-DATA EXTRACTION  ──> YouTubeTranscriptApi fetches raw timestamped captions.
-│
-▼
+```text
+                    [YouTube Video ID]
+                            │
+                            ▼
 
-TEXT SPLITTING   ──> RecursiveCharacterTextSplitter fragments text into 1000-char chunks.
-│
-▼
+1. DATA EXTRACTION
+   ───────────────────────────────────────────────────────────
+   YouTubeTranscriptApi fetches raw timestamped captions.
+                            │
+                            ▼
 
-EMBEDDING & VDB  ──> OpenAI text-embedding-3-small vectors are indexed in FAISS.
-│
-▼
+2. TEXT SPLITTING
+   ───────────────────────────────────────────────────────────
+   RecursiveCharacterTextSplitter fragments text into
+   1000-character chunks.
+                            │
+                            ▼
 
-RETRIEVAL        ──> Similarity search fetches top (k=4) matched chunks.
-│
-▼
+3. EMBEDDING & VECTOR DATABASE
+   ───────────────────────────────────────────────────────────
+   OpenAI text-embedding-3-small generates embeddings,
+   which are indexed in FAISS.
+                            │
+                            ▼
 
-PROMPT INTERFACE ──> Chunks are formatted into text context alongside user query.
-│
-▼
+4. RETRIEVAL
+   ───────────────────────────────────────────────────────────
+   Similarity search retrieves the top k=4 most relevant
+   text chunks.
+                            │
+                            ▼
 
-INFERENCE (LLM)  ──> ChatOpenAI analyzes context and streams back the final answer.
+5. PROMPT INTERFACE
+   ───────────────────────────────────────────────────────────
+   Retrieved chunks are formatted into context and combined
+   with the user's query.
+                            │
+                            ▼
+
+6. INFERENCE (LLM)
+   ───────────────────────────────────────────────────────────
+   ChatOpenAI analyzes the provided context and streams
+   the final response back to the user.
+```
+
+
+1. **Data Ingestion:** The script takes a raw YouTube text payload from subtitles based on the specified video ID.
+2. **Document Processing:** The long continuous string is broken down into structured semantic units using a recursive character splitter. An overlap window ensures context is not broken across block boundaries.
+3. **Vector Vectorization:** Text slices are translated into mathematical vectors capturing high-dimensional meaning and cached locally inside a FAISS search tree.
+4. **Context-Aware Retrieval:** The runtime parses user questions, queries the vector space for mathematical alignment, and surfaces the top 4 matched nodes.
+5. **LCEL Pipeline Generation:** A parallelized chain formats data payloads into string contexts, passing structural prompts dynamically to the inference parser.
+
+
+---
+
+### 1. Install System Dependencies Globally
+use the following command to install the libraries globally rather than in a virtual environment :
+
+
+pip install --break-system-packages youtube-transcript-api langchain langchain-community langchain-openai faiss-cpu
