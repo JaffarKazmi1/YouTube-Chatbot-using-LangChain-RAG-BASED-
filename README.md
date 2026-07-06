@@ -2,6 +2,8 @@
 
 Retrieval-Augmented Generation (RAG) chatbot built with LangChain that extracts transcripts from YouTube videos, processes the text into vector embeddings, and enables users to have conversations about the video's content using OpenAI's language models.
 
+**Live Demo:** [https://qpqqdjpcstt5rdatmcr6jb.streamlit.app/](https://qpqqdjpcstt5rdatmcr6jb.streamlit.app/)
+
 ---
 
 ## Project Description
