@@ -135,10 +135,22 @@ with header_col2:
     )
 
 load_dotenv()
-api_key = os.getenv("GROQ_API_KEY")
+
+
+def get_groq_api_key():
+    try:
+        return st.secrets["GROQ_API_KEY"]
+    except (KeyError, FileNotFoundError):
+        return os.getenv("GROQ_API_KEY")
+
+
+api_key = get_groq_api_key()
 
 if not api_key:
-    st.error("🔑 GROQ_API_KEY environment variable not found. Please set it in your .env file.")
+    st.error(
+        "🔑 GROQ_API_KEY not found. Add it in Streamlit Cloud **Secrets** "
+        "(Settings → Secrets) or in a local `.env` file."
+    )
     st.stop()
 
 # Helper function to extract text chunks from a retriever

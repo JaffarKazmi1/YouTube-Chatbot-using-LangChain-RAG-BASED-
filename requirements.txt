@@ -1,0 +1,12 @@
+streamlit>=1.28.0
+python-dotenv
+youtube-transcript-api
+langchain-text-splitters
+langchain-huggingface
+langchain-community
+langchain-groq
+langchain-core
+faiss-cpu
+sentence-transformers
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
