@@ -25,9 +25,8 @@ from langchain_core.runnables import (
 from langchain_core.output_parsers import StrOutputParser
 
 
-# -------------------------------
+
 # Configuration
-# -------------------------------
 
 VIDEO_ID = "Gfr50f6ZBvo"
 
@@ -43,9 +42,7 @@ if not api_key:
     )
 
 
-# -------------------------------
 # Step 1 : Fetch Transcript
-# -------------------------------
 
 try:
     yt = YouTubeTranscriptApi()
@@ -64,9 +61,7 @@ except TranscriptsDisabled:
 print("\nTranscript Loaded Successfully!\n")
 
 
-# -------------------------------
 # Step 2 : Split into Chunks
-# -------------------------------
 
 splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000,
@@ -78,9 +73,8 @@ chunks = splitter.create_documents([transcript])
 print(f"Number of chunks: {len(chunks)}")
 
 
-# -------------------------------
 # Step 3 : Create Embeddings
-# -------------------------------
+
 
 embeddings = HuggingFaceEmbeddings(
     model_name="BAAI/bge-small-en-v1.5"
@@ -97,9 +91,8 @@ retriever = vector_store.as_retriever(
 )
 
 
-# -------------------------------
 # Step 4 : Load Groq LLM
-# -------------------------------
+
 
 llm = ChatGroq(
     model="llama-3.3-70b-versatile",
@@ -108,9 +101,7 @@ llm = ChatGroq(
 )
 
 
-# -------------------------------
 # Step 5 : Prompt
-# -------------------------------
 
 prompt = ChatPromptTemplate.from_template(
     """
@@ -127,10 +118,7 @@ Question:
 )
 
 
-
-# -------------------------------
 # Step 7 : Build RAG Chain
-# -------------------------------
 
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
@@ -153,9 +141,7 @@ main_chain = (
 )
 
 
-# -------------------------------
 # Step 8 : Ask Questions
-# -------------------------------
 
 while True:
 
