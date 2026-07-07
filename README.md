@@ -89,3 +89,18 @@ use the following command to install the libraries globally rather than in a vir
 
 
 pip install --break-system-packages youtube-transcript-api langchain langchain-community langchain-openai faiss-cpu
+
+## Limitations
+
+1. **The website may occasionally show an error** due to one of the following reasons:
+   - **IP gets temporarily rate-limited** because too many transcript requests are made within a short period.
+   - **The application is running on a different network/IP** that YouTube does not trust, causing transcript retrieval to fail.
+
+2. **Language Support**
+   - The application is currently configured for **English transcripts**.
+   - To use the website with another language, you must manually change the **language option** in the source code.
+
+3. **Chat Session Persistence**
+   - Chat history is **not stored**.
+   - Refreshing the page clears the conversation since no persistent storage is implemented.
+   - As a result, previously discussed context is lost after a refresh.
